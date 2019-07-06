@@ -20,7 +20,7 @@ const t_a_region1 = 1386
  * temperature and pressure; 273.15 K <= T <= 623.15 K  ps(T) <= p <= 100 MPa . 
  */
 
-region1Coefficients = [
+const region1Coefficients = [
 
     [0, -2, 0.14632971213167],
     [0, -1, -0.84548187169114],
@@ -58,15 +58,11 @@ region1Coefficients = [
     [32, -41, -0.93537087292458*(10**(-25))]
 ]
 
-
-
-
 //test input
-
 let t = 500;
 let p = 3;
 
-console.log(enthalpyRegion1(t, p));
+// console.log(enthalpyRegion1(t, p));
 
 function enthalpyRegion1(t, p) {
 
@@ -82,3 +78,26 @@ function enthalpyRegion1(t, p) {
     return tau * gibbsFreeEnergy * r * t
 }
 
+/**
+ * Custom function for calculating enthalpy change in gas mixtures
+ */
+
+const N2_CP_COEFFICIENTS = [0.029, 0.2199*(10**-5), 0.5723*(10**-8), -2.871*(10**-12)]
+
+function celsiusToKelvin(t) {
+    return t + 273.15
+}
+
+function enthalpyN2Calc(t) {
+    //return integrated enhalpy based on the derivative a +bT + cT^2 + dT^3
+    // let enthalpyN2 = N2_CP_COEFFICIENTS[0]*(temperature) + N2_CP_COEFFICIENTS[1]*(temperature)/2 + N2_CP_COEFFICIENTS[2]*(temperature)/3 + N2_CP_COEFFICIENTS[3]*(temperature)/4
+    let enthalpyN2 = 0;
+    for (let i = 0; i < N2_CP_COEFFICIENTS.length; i++) {
+        //kJ/mol
+        enthalpyN2 += (t**(i+1)) * N2_CP_COEFFICIENTS[i]/(i+1)
+    }
+    console.log(enthalpyN2, "kJ/mol")
+
+}
+
+enthalpyN2Calc(500)
